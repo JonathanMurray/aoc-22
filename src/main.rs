@@ -3,10 +3,68 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
 fn main() {
-    let file = File::open("input_1.txt").expect("Opening input file");
-    let lines = BufReader::new(file).lines();
-    let sum = puzzle_1_find_sum_of_top_three(lines);
-    println!("Sum: {}", sum);
+    let file = File::open("input_2.txt").expect("Opening input file");
+    let lines = BufReader::new(file).lines().map(|line| line.unwrap());
+    let score = puzzle_2_predict_score(lines);
+    println!("Score: {}", score);
+}
+
+fn puzzle_2_predict_score(input: impl Iterator<Item = impl Into<String>>) -> u32 {
+    let mut total_score = 0;
+    for line in input {
+        let line = line.into();
+        let chars = line.chars().into_iter().collect::<Vec<char>>();
+        if let [opponent, ' ', you] = chars[..] {
+            println!("{} -> {}", opponent, you);
+            let opponent = match opponent {
+                'A' => Shape::Rock,
+                'B' => Shape::Papers,
+                'C' => Shape::Scissors,
+                _ => panic!("Invalid opponent move"),
+            };
+            let you = match you {
+                'X' => Shape::Rock,
+                'Y' => Shape::Papers,
+                'Z' => Shape::Scissors,
+                _ => panic!("Invalid response"),
+            };
+            total_score += you.base_score() + you.compete_against(&opponent);
+        } else {
+            panic!("Malformed line: {}", line);
+        }
+    }
+    total_score
+}
+
+enum Shape {
+    Rock,
+    Papers,
+    Scissors,
+}
+
+impl Shape {
+    fn base_score(&self) -> u32 {
+        match self {
+            Self::Rock => 1,
+            Self::Papers => 2,
+            Self::Scissors => 3,
+        }
+    }
+
+    fn compete_against(&self, opponent: &Self) -> u32 {
+        let lost = 0;
+        let draw = 3;
+        let won = 6;
+        match (self, opponent) {
+            (Self::Rock, Self::Papers) => lost,
+            (Self::Rock, Self::Scissors) => won,
+            (Self::Papers, Self::Rock) => won,
+            (Self::Papers, Self::Scissors) => lost,
+            (Self::Scissors, Self::Rock) => lost,
+            (Self::Scissors, Self::Papers) => won,
+            _ => draw,
+        }
+    }
 }
 
 #[allow(dead_code)]
@@ -28,6 +86,7 @@ fn puzzle_1_find_most_carried_calories(
     max_elf_load
 }
 
+#[allow(dead_code)]
 fn puzzle_1_find_sum_of_top_three(
     input: impl Iterator<Item = io::Result<impl Into<String>>>,
 ) -> u32 {
