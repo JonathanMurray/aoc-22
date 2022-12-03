@@ -53,9 +53,7 @@ impl Shape {
 }
 
 #[allow(dead_code)]
-pub fn puzzle_2_predict_score_from_recommended_moves(
-    input: impl Iterator<Item = impl Into<String>>,
-) -> u32 {
+pub fn predict_score_from_recommended_moves(input: impl Iterator<Item = impl Into<String>>) -> u32 {
     let mut total_score = 0;
     for line in input {
         let line = line.into();
@@ -77,7 +75,7 @@ pub fn puzzle_2_predict_score_from_recommended_moves(
 }
 
 #[allow(dead_code)]
-pub fn puzzle_2_predict_score_from_recommended_outcome(
+pub fn predict_score_from_recommended_outcome(
     input: impl Iterator<Item = impl Into<String>>,
 ) -> u32 {
     let mut total_score = 0;
