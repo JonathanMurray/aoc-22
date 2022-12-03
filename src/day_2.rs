@@ -76,6 +76,7 @@ pub fn puzzle_2_predict_score_from_recommended_moves(
     total_score
 }
 
+#[allow(dead_code)]
 pub fn puzzle_2_predict_score_from_recommended_outcome(
     input: impl Iterator<Item = impl Into<String>>,
 ) -> u32 {

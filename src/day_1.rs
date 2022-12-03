@@ -1,9 +1,7 @@
 use std::cmp::max;
 
 #[allow(dead_code)]
-fn puzzle_1_find_most_carried_calories(
-    input: impl Iterator<Item = impl Into<String>>,
-) -> u32 {
+fn puzzle_1_find_most_carried_calories(input: impl Iterator<Item = impl Into<String>>) -> u32 {
     let mut max_elf_load = 0;
     let mut current_elf_load = 0;
     for line in input {
@@ -20,9 +18,7 @@ fn puzzle_1_find_most_carried_calories(
 }
 
 #[allow(dead_code)]
-fn puzzle_1_find_sum_of_top_three(
-    input: impl Iterator<Item = impl Into<String>>,
-) -> u32 {
+fn puzzle_1_find_sum_of_top_three(input: impl Iterator<Item = impl Into<String>>) -> u32 {
     let mut top_three = [0, 0, 0];
     let mut current_elf_load = 0;
     for line in input {
