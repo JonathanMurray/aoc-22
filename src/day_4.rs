@@ -2,28 +2,26 @@
 pub fn count_pairs_where_one_fully_contains_the_other(
     input: impl Iterator<Item = impl Into<String>>,
 ) -> u32 {
-    let mut count = 0;
-    for line in input {
-        let (a, b) = parse_line(line);
-        let full_overlap = (b.0 >= a.0 && b.1 <= a.1) || (a.0 >= b.0 && a.1 <= b.1);
-        if full_overlap {
-            count += 1;
-        }
-    }
-    count
+    input
+        .map(|line| parse_line(line))
+        .filter(|(a, b)| are_fully_overlapping(*a, *b))
+        .count() as u32
 }
 
 #[allow(dead_code)]
 pub fn count_overlapping_pairs(input: impl Iterator<Item = impl Into<String>>) -> u32 {
-    let mut count = 0;
-    for line in input {
-        let (a, b) = parse_line(line);
-        let overlap = b.1 >= a.0 && b.0 <= a.1;
-        if overlap {
-            count += 1;
-        }
-    }
-    count
+    input
+        .map(|line| parse_line(line))
+        .filter(|(a, b)| are_overlapping(*a, *b))
+        .count() as u32
+}
+
+fn are_fully_overlapping(a: (u32, u32), b: (u32, u32)) -> bool {
+    (b.0 >= a.0 && b.1 <= a.1) || (a.0 >= b.0 && a.1 <= b.1)
+}
+
+fn are_overlapping(a: (u32, u32), b: (u32, u32)) -> bool {
+    b.1 >= a.0 && b.0 <= a.1
 }
 
 fn parse_line(line: impl Into<String>) -> ((u32, u32), (u32, u32)) {
